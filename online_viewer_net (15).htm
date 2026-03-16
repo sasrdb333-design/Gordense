@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gordense | Official Animated Series</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;500;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff2a2a;
+            --bg: #050505;
+            --card-bg: #0a0a0a;
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        * { 
+            box-sizing: border-box; 
+            scroll-behavior: smooth; 
+            cursor: auto; 
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Hind Siliguri', sans-serif;
+            background: var(--bg);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .header-container {
+            max-width: 1200px; margin: auto; padding: 15px 25px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; color: #ffffff; text-transform: uppercase; }
+        nav { display: flex; align-items: center; }
+        nav a { text-decoration: none; color: #ccc; margin-left: 25px; font-size: 14px; font-weight: 500; text-transform: uppercase; transition: 0.3s; }
+        nav a:hover { color: var(--primary); }
+
+        .lang-toggle {
+            margin-left: 20px; background: transparent; border: 1px solid #ffffff; color: #ffffff;
+            padding: 5px 12px; cursor: pointer; border-radius: 4px; font-size: 12px;
+        }
+
+        .hero {
+            height: 100vh; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; text-align: center; padding: 0 20px;
+        }
+
+        .hero h1 { font-size: clamp(48px, 10vw, 100px); margin: 10px 0; font-weight: 700; }
+        .hero p { max-width: 600px; font-size: 20px; color: #aaa; margin-bottom: 40px; font-weight: 300; }
+
+        .btn-style {
+            display: inline-block; background: var(--primary); color: white; padding: 8px 20px;
+            border: none; border-radius: 4px; font-size: 14px; font-weight: 900; text-decoration: none;
+            box-shadow: 0 4px 0px #9b1a1a; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
+        }
+        .btn-main { padding: 14px 45px; font-size: 20px; border-radius: 8px; box-shadow: 0 8px 0px #9b1a1a; }
+        .btn-main:active { box-shadow: 0 2px 0px #9b1a1a; transform: translateY(6px); }
+
+        .section { 
+            max-width: 1100px; margin: 100px auto; padding: 0 25px;
+            opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out;
+        }
+        .section.reveal { opacity: 1; transform: translateY(0); }
+
+        .title-container { margin-bottom: 40px; }
+        .title-line { width: 40px; height: 4px; background: var(--primary); display: inline-block; vertical-align: middle; margin-right: 15px; }
+        .section-title { font-size: 32px; font-weight: 700; display: inline-block; vertical-align: middle; }
+
+        .story-box { background: var(--card-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--glass-border); }
+        .story-box p { font-weight: 300; font-size: 18px; color: #ddd; }
+
+        .char-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .char-card { background: var(--card-bg); padding: 50px 40px; border-radius: 30px; border: 1px solid var(--glass-border); position: relative; }
+        .char-card h3 { font-size: 28px; margin: 25px 0; font-weight: 700; }
+        .char-card ul { list-style: none; padding: 0; margin: 0; }
+        .char-card li { 
+            padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 18px; color: #ffffff;
+            font-weight: 300;
+        }
+        .char-card li b { color: #ffffff; font-weight: 500; margin-right: 5px; }
+
+        /* Donation Styling */
+        .donation-box { background: var(--card-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; }
+        .donation-form { display: flex; flex-direction: column; max-width: 450px; margin: 30px auto 0; gap: 15px; }
+        .donation-form input {
+            padding: 14px; background: #111; border: 1px solid var(--glass-border);
+            color: white; border-radius: 8px; outline: none; font-family: 'Hind Siliguri', sans-serif; font-size: 16px;
+        }
+        .donation-form input:focus { border-color: var(--primary); }
+
+        /* FAQ Styling - Red Dots Removed */
+        .faq-item { background: var(--card-bg); margin-bottom: 15px; border-radius: 10px; border: 1px solid var(--glass-border); overflow: hidden; }
+        .faq-question {
+            padding: 22px; width: 100%; text-align: left; background: none; border: none;
+            color: white; font-family: 'Hind Siliguri', sans-serif; font-size: 20px; font-weight: 700;
+            cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+        }
+        /* লাল ডট সরানো হয়েছে এখান থেকে */
+        .faq-question span:first-child::before { content: ""; } 
+
+        .faq-answer { padding: 0 22px; max-height: 0; overflow: hidden; transition: 0.4s ease; color: #bbb; font-weight: 300; }
+        .faq-item.active .faq-answer { max-height: 300px; padding: 10px 22px 25px 22px; }
+
+        footer { padding: 50px; text-align: center; color: #444; border-top: 1px solid var(--glass-border); text-transform: uppercase; font-size: 12px; letter-spacing: 2px; }
+        .creator-info { margin-top: 10px; font-size: 14px; color: #888; }
+        .creator-info a { color: var(--primary); text-decoration: none; }
+
+        @media (max-width: 768px) { .char-grid { grid-template-columns: 1fr; } nav a { display: none; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">Gordense</div>
+            <nav>
+                <a href="#story">Story</a>
+                <a href="#characters">Crew</a>
+                <a href="#faq">FAQ</a>
+                <a href="#donate">Donate</a>
+                <button class="lang-toggle" onclick="toggleLang()" id="langBtn">EN</button>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1 id="heroTitle">Gordense</h1>
+        <p id="heroText">অজানাকে জানার এক মহাকাব্যিক যাত্রা শুরু হতে চলেছে।</p>
+        <a href="https://www.youtube.com/@RDBMate" target="_blank" class="btn-style btn-main" id="watchBtn">ভিডিও দেখুন</a>
+    </section>
+
+    <div class="section" id="story">
+        <div class="title-container">
+            <div class="title-line"></div>
+            <h2 class="section-title" id="storyTitle">কাহিনী সংক্ষেপ</h2>
+        </div>
+        <div class="story-box">
+            <p id="storyPara">
+                Gordense একটি রহস্যে ভরা জগৎ, যেখানে আছে অদ্ভুত সব প্রাণী এবং অসংখ্য অজানা রহস্য। এই পৃথিবীতে একটি কিংবদন্তি বস্তু আছে যার নাম <b>Gorse</b>। শত হাজার বছর ধরে পুরো বিশ্বের মানুষ এটি খুঁজে বেড়াচ্ছে, কিন্তু এখন পর্যন্ত মাত্র ৩ জন এটি খুঁজে পেয়েছে। সর্বশেষ ৫০ বছর আগে একজন কিংবদন্তি অভিযাত্রী এটি খুঁজে পেয়েছিল। যারা এই রহস্যের খোঁজে ঘুরে বেড়ায় তাদের বলা হয় <b>Drifters</b>।
+            </p>
+        </div>
+    </div>
+
+    <div class="section" id="characters">
+        <div class="title-container">
+            <div class="title-line"></div>
+            <h2 class="section-title" id="crewTitle">Brown Boots Drifters (ব্রাউন বুটস ড্রাফটার্স)</h2>
+        </div>
+
+        <div class="char-grid">
+            <div class="char-card">
+                <div class="btn-style">Protagonist</div>
+                <h3>Arda Injo</h3>
+                <ul>
+                    <li><b class="lbl-hometown">Hometown:</b> Mickense</li>
+                    <li><b class="lbl-age">Age:</b> 14</li>
+                    <li><b class="lbl-gender">Gender:</b> <span class="val-male">Male</span></li>
+                    <li><b class="lbl-state">State:</b> <span class="val-alive">Alive</span></li>
+                    <li><b class="lbl-debut">Manga Debut:</b> Chapter 1</li>
+                    <li><b class="lbl-goal">Goal:</b> Best Drifter</li>
+                </ul>
+            </div>
+
+            <div class="char-card">
+                <div class="btn-style">The Strength</div>
+                <h3>Evin (এভিন)</h3>
+                <ul>
+                    <li><b class="lbl-hometown">Hometown:</b> Roarta</li>
+                    <li><b class="lbl-age">Age:</b> 15</li>
+                    <li><b class="lbl-gender">Gender:</b> <span class="val-male">Male</span></li>
+                    <li><b class="lbl-state">State:</b> <span class="val-alive">Alive</span></li>
+                    <li><b class="lbl-debut">Manga Debut:</b> Chapter 1</li>
+                    <li><b class="lbl-role">Role:</b> Crew Fighter</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="faq">
+        <div class="title-container">
+            <div class="title-line"></div>
+            <h2 class="section-title" id="faqTitle">সাধারণ কিছু প্রশ্ন</h2>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question"><span class="q1">Gorse কি?</span> <span>+</span></button>
+            <div class="faq-answer" id="a1">Gorse হলো Gordense পৃথিবীর একটি প্রাচীন কিংবদন্তি বস্তু। যা আজও এক বড় রহস্য।</div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question"><span class="q2">Drifters কারা?</span> <span>+</span></button>
+            <div class="faq-answer" id="a2">যারা অজানার খোঁজে এবং Gorse-এর সন্ধানে পুরো পৃথিবী ঘুরে বেড়ায়, তাদেরকেই Drifters বলা হয়।</div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question"><span class="q3">ব্রাউন বুটস ড্রাফটার্স কি?</span> <span>+</span></button>
+            <div class="faq-answer" id="a3">ব্রাউন বুটস ড্রাফটার্স হলো Arda-এর দ্বারা গঠিত একটি Drifters স্কোয়াড যারা সবাই Gorse-এর খোঁজ করছে।</div>
+        </div>
+    </div>
+
+    <div class="section" id="donate">
+        <div class="title-container">
+            <div class="title-line"></div>
+            <h2 class="section-title" id="donateTitle" style="font-family: 'Hind Siliguri', sans-serif;">সহযোগিতা করুন</h2>
+        </div>
+        <div class="donation-box">
+            <p id="donateDesc" style="font-family: 'Hind Siliguri', sans-serif;">আমাদের সিরিজটিকে এগিয়ে নিতে সাহায্য করতে পারেন। নিচে আপনার তথ্য দিন।</p>
+            <div class="donation-form">
+                <input type="text" id="donorName" placeholder="আপনার নাম" required>
+                <input type="text" id="donorContact" placeholder="আপনার ফোন নাম্বার বা ইমেইল" required>
+                <input type="number" id="donorAmount" placeholder="টাকার পরিমাণ (ঐচ্ছিক)">
+                <button onclick="sendDonation()" class="btn-style" style="font-family: 'Hind Siliguri', sans-serif; font-size: 18px;">ডোনেশন দিন</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="creator-info">Created by <b>Ahmad Shoaib</b></div>
+        &copy; 2026 Gordense Animated Series | <a href="https://www.youtube.com/@RDBMate" target="_blank" style="color: #666; text-decoration: none;">RDB Mate</a>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                q.parentElement.classList.toggle('active');
+            });
+        });
+
+        function reveal() {
+            document.querySelectorAll(".section").forEach(s => {
+                const top = s.getBoundingClientRect().top;
+                if (top < window.innerHeight - 100) s.classList.add("reveal");
+            });
+        }
+        window.addEventListener("scroll", reveal);
+        reveal();
+
+        function sendDonation() {
+            const name = document.getElementById('donorName').value;
+            const contact = document.getElementById('donorContact').value;
+            const amount = document.getElementById('donorAmount').value;
+            
+            if(!name || !contact) {
+                alert("দয়া করে আপনার নাম এবং যোগাযোগের তথ্য দিন।");
+                return;
+            }
+
+            const message = `*Gordense Donation Info*%0A-----------------------%0A*Name:* ${name}%0A*Contact:* ${contact}%0A*Amount:* ${amount || 'ঐচ্ছিক'} BDT`;
+            const whatsappUrl = `https://wa.me/8801728973081?text=${message}`;
+            
+            window.open(whatsappUrl, '_blank');
+        }
+
+        let currentLang = "bn";
+        function toggleLang() {
+            currentLang = (currentLang === "bn") ? "en" : "bn";
+            const btn = document.getElementById("langBtn");
+            btn.innerText = (currentLang === "bn") ? "EN" : "BN";
+            
+            document.getElementById("heroText").innerText = (currentLang === "bn") ? "অজানাকে জানার এক মহাকাব্যিক যাত্রা শুরু হতে চলেছে।" : "An epic journey to discover the unknown is about to begin.";
+            document.getElementById("storyTitle").innerText = (currentLang === "bn") ? "কাহিনী সংক্ষেপ" : "Synopsis";
+            document.getElementById("watchBtn").innerText = (currentLang === "bn") ? "ভিডিও দেখুন" : "Watch Now";
+            document.getElementById("crewTitle").innerText = (currentLang === "bn") ? "Brown Boots Drifters (ব্রাউন বুটস ড্রাফটার্স)" : "Brown Boots Drifters Crew";
+            document.getElementById("faqTitle").innerText = (currentLang === "bn") ? "সাধারণ কিছু প্রশ্ন" : "General Questions";
+            document.getElementById("donateTitle").innerText = (currentLang === "bn") ? "সহযোগিতা করুন" : "Donate Now";
+            document.getElementById("donateDesc").innerText = (currentLang === "bn") ? "আমাদের সিরিজটিকে এগিয়ে নিতে সাহায্য করতে পারেন। নিচে আপনার তথ্য দিন।" : "Support our series by providing your info below.";
+
+            document.querySelector(".q1").innerText = (currentLang === "bn") ? "Gorse কি?" : "What is Gorse?";
+            document.querySelector(".q2").innerText = (currentLang === "bn") ? "Drifters কারা?" : "Who are Drifters?";
+            document.querySelector(".q3").innerText = (currentLang === "bn") ? "ব্রাউন বুটস ড্রাফটার্স কি?" : "What is Brown Boots Drifters?";
+
+            const labelMap = {
+                ".lbl-hometown": ["হোমটাউন:", "Hometown:"],
+                ".lbl-age": ["বয়স:", "Age:"],
+                ".lbl-gender": ["লিঙ্গ:", "Gender:"],
+                ".lbl-state": ["অবস্থা:", "State:"],
+                ".lbl-debut": ["ম্যাঙ্গা ডেবিউ:", "Manga Debut:"],
+                ".lbl-goal": ["লক্ষ্য:", "Goal:"],
+                ".lbl-role": ["ভূমিকা:", "Role:"],
+                ".val-male": ["পুরুষ", "Male"],
+                ".val-alive": ["জীবিত", "Alive"]
+            };
+
+            for (let selector in labelMap) {
+                document.querySelectorAll(selector).forEach(el => {
+                    el.innerText = (currentLang === "bn") ? labelMap[selector][0] : labelMap[selector][1];
+                });
+            }
+
+            document.getElementById("donorName").placeholder = (currentLang === "bn") ? "আপনার নাম" : "Your Name";
+            document.getElementById("donorContact").placeholder = (currentLang === "bn") ? "আপনার ফোন নাম্বার বা ইমেইল" : "Phone or Email";
+            document.getElementById("donorAmount").placeholder = (currentLang === "bn") ? "টাকার পরিমাণ (ঐচ্ছিক)" : "Amount (Optional)";
+        }
+    </script>
+</body>
+</html>
